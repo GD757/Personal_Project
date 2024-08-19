@@ -1,0 +1,20 @@
+                     List of relations
+ Schema |              Name              | Type  |  Owner   
+--------+--------------------------------+-------+----------
+ public | accounts_user                  | table | garyd757
+ public | accounts_user_groups           | table | garyd757
+ public | accounts_user_user_permissions | table | garyd757
+ public | auth_group                     | table | garyd757
+ public | auth_group_permissions         | table | garyd757
+ public | auth_permission                | table | garyd757
+ public | authtoken_token                | table | garyd757
+ public | django_admin_log               | table | garyd757
+ public | django_content_type            | table | garyd757
+ public | django_migrations              | table | garyd757
+ public | django_session                 | table | garyd757
+ public | events_event                   | table | garyd757
+ public | events_event_rooms             | table | garyd757
+ public | rooms_room                     | table | garyd757
+(14 rows)
+
+    

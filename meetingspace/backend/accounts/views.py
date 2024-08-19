@@ -14,6 +14,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 import logging
+from .serializer import UserSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -31,12 +32,13 @@ class Login(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(email=email, password=password)
 
-        if user is not None:
+        if user:
             token, created = Token.objects.get_or_create(user=user)
+            userdata = UserSerializer(user).data
             logger.info(f"User: {user.email}, Token: {token.key}")
-            return Response({"token": token.key}, status=HTTP_200_OK)
+            return Response({"token": token.key, "user": userdata}, status=HTTP_200_OK)
 
         else:
             return Response({"error": "Invalid credentials"}, status=HTTP_401_UNAUTHORIZED)
@@ -48,3 +50,12 @@ class Logout(APIView):
     def post(self, request):
         request.user.auth_token.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+    
+class Info(APIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=HTTP_200_OK)

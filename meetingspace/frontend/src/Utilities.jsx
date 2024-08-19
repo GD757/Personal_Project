@@ -57,3 +57,18 @@ export const getEvents = async () => {
   }
   return [];
 };
+
+export const confirmUser = async () => {
+  let token = localStorage.getItem("token")
+  if (token){
+    console.log(token)
+    api.defaults.headers.common["Authorization"] = `Token ${token}`
+  try{
+    let response = await api.get('/user')
+    return response.data
+  } catch (error) {
+    console.error('Error confirming user:', error);
+  }
+    
+  }
+};

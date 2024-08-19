@@ -23,6 +23,7 @@ from events.views import EventList
 from events.views import EventDetail
 from rooms.views import RoomList
 from rooms.views import RoomDetail
+from accounts.views import Info
 
 
 urlpatterns = [ #add api/
@@ -35,6 +36,7 @@ urlpatterns = [ #add api/
     path('api/events/<int:id>/', EventDetail.as_view(), name='event-detail'),
     path('api/rooms/', RoomList.as_view(), name='room-list-create'),
     path('api/rooms/<int:id>/', RoomDetail.as_view(), name='room-detail'),
+    path('api/user/', Info.as_view(), name='user')
 ]
 
 

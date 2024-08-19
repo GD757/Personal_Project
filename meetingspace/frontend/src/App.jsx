@@ -3,9 +3,10 @@ import { Outlet, Link } from "react-router-dom";
 import roomImage from './assets/roomImage.jpeg';
 import './App.css';
 import axios from 'axios';
+import { confirmUser } from './Utilities';
 
 function App() {
-  // const [user, setUser] = useState(null)
+  const [user, setUser] = useState(confirmUser)
   // const testConnection = async() =>{
   //   let response =await axios.get("")
   // }
@@ -24,7 +25,12 @@ function App() {
       {/* Background Image */}
       <div className="background" style={{ backgroundImage: `url(${roomImage})` }}>
         <div className="content">
-          <Outlet /> {/* This renders the routed components */}
+          <Outlet context= {
+            {
+              user,
+              setUser
+            }
+          } /> 
         </div>
       </div>
     </div>

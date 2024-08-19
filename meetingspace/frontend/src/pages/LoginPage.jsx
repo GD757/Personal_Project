@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { signIn } from '../Utilities';
+import { useOutletContext } from 'react-router-dom';
 
 
 const LoginPage = () => {
+  const {user, setUser} = useOutletContext()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  
   
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const user = await signIn(email, password);
+      setUser(user)
       console.log(user);
       console.log('Email:', email); // Check the email value
       console.log('Password:', password); // Check the password value

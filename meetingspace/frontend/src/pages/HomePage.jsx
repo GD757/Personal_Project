@@ -8,7 +8,8 @@ function HomePage() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
   const {user} = useOutletContext()
-  console.log(user.email)
+  
+  
 
   useEffect(() => {
     const fetchWeather = async () => {

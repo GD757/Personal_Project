@@ -13,7 +13,9 @@ class EventList(APIView):
         return Response(serialized.data)
 
     def post(self, request):
-        serialized = EventSerializer(data=request.data)
+        data = request.data
+        data['user'] = request.user.id  # Automatically associate the event with the logged-in user
+        serialized = EventSerializer(data=data)
         if serialized.is_valid():
             serialized.save()
             return Response(serialized.data, status=HTTP_201_CREATED)

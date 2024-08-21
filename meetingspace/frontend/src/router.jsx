@@ -5,12 +5,14 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import EventsPage from "./pages/EventsPage";
-import ModelDetails from "./pages/ModelDetails"; // Ensure the path and filename are correct
+import MatterportViewer from "./pages/MatterportViewer"; // Ensure the path and filename are correct
+import { confirmUser } from "./Utilities";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App/>,
+    loader: confirmUser,
     children: [
       {
         index: true,
@@ -25,8 +27,8 @@ const router = createBrowserRouter([
         element: <SignupPage />,
       },
       {
-        path: "model-details", // Ensure this path is correct
-        element: <ModelDetails />,
+        path: "matterportviewer", // Ensure this path is correct
+        element: <MatterportViewer />,
       },
       {
         path: "events",

@@ -16,10 +16,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const user = await signIn(email, password);
-      setUser(user)
-      console.log(user);
-      console.log('Email:', email); // Check the email value
-      console.log('Password:', password); // Check the password value
+      setUser(user)     
       if (user) {
         setMessage('Login successful!');
       } else {

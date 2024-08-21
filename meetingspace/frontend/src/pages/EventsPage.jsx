@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getEvents, api } from '../Utilities';
+import { getEvents, createEvent } from '../Utilities';
 
 function EventsPage() {
   const [events, setEvents] = useState([]);
@@ -27,15 +27,12 @@ function EventsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await api.post("events/", newEvent);
-      if (response.status === 201) {
-        setEvents([...events, response.data]); // Add the new event to the state
-        setNewEvent({ name: '', date: '', description: '' }); // Reset the form
-      }
-    } catch (error) {
-      alert("Error creating event");
-      console.error(error);
+
+    const createdEvent = await createEvent(newEvent);
+
+    if (createdEvent) {
+      setEvents([...events, createdEvent]); // Add the newly created event to the state
+      setNewEvent({ name: '', date: '', description: '' }); // Reset the form
     }
   };
 
@@ -58,9 +55,9 @@ function EventsPage() {
         <div>
           <label>Date:</label>
           <input
-            type="date"  // Ensure the input type is "date"
+            type="date"
             name="date"
-            value={newEvent.date}  // Corrected to use newEvent.date
+            value={newEvent.date}
             onChange={handleChange}
             required
           />
@@ -89,5 +86,6 @@ function EventsPage() {
     </div>
   );
 }
+
 
 export default EventsPage;

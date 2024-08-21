@@ -5,7 +5,7 @@ from rooms.models import Room
 class Event(models.Model):
     name = models.CharField(max_length=100)
     rooms = models.ManyToManyField(Room, related_name='events', blank=True)
-    date = models.DateField()
+    date = models.DateTimeField()
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
     

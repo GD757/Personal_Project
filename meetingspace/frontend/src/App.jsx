@@ -31,16 +31,7 @@ function App() {
 
   
   return (
-    // <div className="app">
-    //   <nav className="navbar">
-    //     <ul className="nav-links">
-    //       <li><Link to="/">Home</Link></li>
-    //       <li><Link to="/login">Login</Link></li>
-    //       <li><Link to="/signup">Signup</Link></li>
-    //       <li><Link to="/events">Events</Link></li>  
-    //       <li><Link to="/matterportviewer">EventSpace Viewer</Link></li> 
-    //     </ul>
-    //   </nav>
+    
     <div className="app">
       <nav className="navbar">
         <ul className="nav-links">
@@ -53,7 +44,8 @@ function App() {
           ) : (
             <>
               <li><Link to="/events">Events</Link></li>
-              <li><Link to="/matterportviewer">EventSpace Viewer</Link></li>
+              <li><Link to="/room">Event Space</Link></li>
+              <li><Link to="/matterportviewer">Event Walkthrough</Link></li>
               <li><button onClick={handleLogout} className="logout-button">Sign Out</button></li>
             </>
           )}

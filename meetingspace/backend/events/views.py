@@ -32,21 +32,21 @@ class EventList(APIView):
 
 class EventDetail(APIView):
 
-    def get_object(self, id):
+    def get_object(self, pk):
         try:
-            return Event.objects.get(id=id)
+            return Event.objects.get(pk=pk)
         except Event.DoesNotExist:
             return None
 
-    def get(self, request, id):
-        event = self.get_object(id)
+    def get(self, request, pk):
+        event = self.get_object(pk)
         if event is None:
             return Response({"error": "Event not found"}, status=HTTP_404_NOT_FOUND)
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
-    def put(self, request, id):
-        event = self.get_object(id)
+    def put(self, request, pk):
+        event = self.get_object(pk)
         if event is None:
             return Response({"error": "Event not found"}, status=HTTP_404_NOT_FOUND)
         serialized = EventSerializer(event, data=request.data)
@@ -55,8 +55,8 @@ class EventDetail(APIView):
             return Response(serialized.data)
         return Response(serialized.errors, status=HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
-        event = self.get_object(id)
+    def delete(self, request, pk):
+        event = self.get_object(pk)
         if event is None:
             return Response({"error": "Event not found"}, status=HTTP_404_NOT_FOUND)
         event.delete()

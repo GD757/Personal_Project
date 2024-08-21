@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getEvents, createEvent, editEvent, deleteEvent } from '../Utilities';
+import { getEvents, createEvent, updateEvent, deleteEvent } from '../Utilities';
+import RoomPage from './RoomPage';
 
 function EventsPage() {
   const [events, setEvents] = useState([]);
@@ -7,9 +8,8 @@ function EventsPage() {
     name: '',
     date: '',
     description: '',
+    room: null, // Initialize room to null
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingEventId, setEditingEventId] = useState(null);
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -27,52 +27,50 @@ function EventsPage() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (isEditing) {
-      const updatedEvent = await editEvent(editingEventId, newEvent);
-      if (updatedEvent) {
-        setEvents(events.map(event => event.id === editingEventId ? updatedEvent : event));
-        setIsEditing(false);
-        setEditingEventId(null);
-      }
-    } else {
-      const createdEvent = await createEvent(newEvent);
-      if (createdEvent) {
-        setEvents([...events, createdEvent]);
-      }
-    }
-
-    setNewEvent({ name: '', date: '', description: '' });
+  const handleRoomSelect = (room) => {
+    setNewEvent({
+      ...newEvent,
+      room: room.id, // Set the selected room's ID
+    });
   };
 
-  const handleEdit = (event) => {
-    setNewEvent({
-      name: event.name,
-      date: event.date,
-      description: event.description,
-    });
-    setIsEditing(true);
-    setEditingEventId(event.id);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (newEvent.id) {
+      // Update existing event
+      const updatedEvent = await updateEvent(newEvent.id, newEvent);
+      if (updatedEvent) {
+        setEvents(events.map(event => event.id === newEvent.id ? updatedEvent : event));
+      }
+    } else {
+      // Create new event
+      const createdEvent = await createEvent(newEvent);
+      if (createdEvent) {
+        setEvents([...events, createdEvent]); // Add the newly created event to the state
+      }
+    }
+    
+    // Reset the form after submission
+    setNewEvent({ name: '', date: '', description: '', room: null });
   };
 
   const handleDelete = async (eventId) => {
-    const success = await deleteEvent(eventId);
+    await deleteEvent(eventId);
+    setEvents(events.filter((event) => event.id !== eventId));
+  };
 
-    if (success) {
-      setEvents(events.filter(event => event.id !== eventId));
-    } else {
-      alert('Failed to delete event');
-    }
+  const handleEdit = (eventId) => {
+    const eventToEdit = events.find(event => event.id === eventId);
+    setNewEvent(eventToEdit);
   };
 
   return (
     <div className="events-page">
       <h2>Upcoming Events</h2>
-      
+
       <form onSubmit={handleSubmit}>
-        <h3>{isEditing ? 'Edit Event' : 'Create New Event'}</h3>
+        <h3>{newEvent.id ? 'Edit Event' : 'Create New Event'}</h3>
         <div>
           <label>Event Name:</label>
           <input
@@ -102,26 +100,25 @@ function EventsPage() {
             required
           />
         </div>
-        <button type="submit">{isEditing ? 'Update Event' : 'Create Event'}</button>
-        {isEditing && (
-          <button type="button" onClick={() => {
-            setIsEditing(false);
-            setEditingEventId(null);
-            setNewEvent({ name: '', date: '', description: '' });
-          }}>
-            Cancel
-          </button>
-        )}
+        <div>
+          <label>Selected Room:</label>
+          <span>{newEvent.room ? `Room ID: ${newEvent.room}` : 'No room selected'}</span>
+        </div>
+        <button type="submit">{newEvent.id ? 'Update Event' : 'Create Event'}</button>
       </form>
 
-      <h3>Existing Events</h3>
+      <h3>Select a Room</h3>
+      <RoomPage onSelectRoom={handleRoomSelect} />
+
+      <h3>Event List</h3>
       <ul className="events-list">
         {events.map((event) => (
           <li key={event.id} className="event-item">
             <h3>{event.name}</h3>
             <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
             <p>{event.description}</p>
-            <button onClick={() => handleEdit(event)}>Edit</button>
+            <p><strong>Room ID:</strong> {event.room}</p>
+            <button onClick={() => handleEdit(event.id)}>Edit</button>
             <button onClick={() => handleDelete(event.id)}>Delete</button>
           </li>
         ))}

@@ -33,9 +33,9 @@ urlpatterns = [ #add api/
     path('api/logout/', Logout.as_view(), name='logout'),
     # path('api/', include('api.urls')), If putting api from frontend to backend
     path('api/events/', EventList.as_view(), name='event-list-create'),
-    path('api/events/<int:id>/', EventDetail.as_view(), name='event-detail'),
+    path('api/events/<int:pk>/', EventDetail.as_view(), name='event-detail'),
     path('api/rooms/', RoomList.as_view(), name='room-list-create'),
-    path('api/rooms/<int:id>/', RoomDetail.as_view(), name='room-detail'),
+    path('api/rooms/<int:pk>/', RoomDetail.as_view(), name='room-detail'),
     path('api/user/', Info.as_view(), name='user')
 ]
 

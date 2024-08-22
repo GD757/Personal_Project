@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@matterport/sdk": "^1.4.24",
+    "@matterport/webcomponent": "^0.1.39",
     "@react-three/drei": "^9.109.5",
     "@react-three/fiber": "^8.16.8",
     "@types/three": "^0.167.1",
@@ -17,7 +19,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",
-    "three": "^0.167.1"
+    "three": "^0.151.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

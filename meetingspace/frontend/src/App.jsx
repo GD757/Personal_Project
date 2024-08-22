@@ -53,7 +53,7 @@ function App() {
       </nav>
 
       
-      <div className="background" style={{ backgroundImage: `url(${roomImage})` }}>
+      {/* <div className="background" style={{ backgroundImage: `url(${roomImage})` }}> */}
         <div className="content">
           <Outlet context= {
             {
@@ -63,7 +63,7 @@ function App() {
           } /> 
         </div>
       </div>
-    </div>
+    // </div>
   )
 }
 

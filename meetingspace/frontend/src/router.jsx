@@ -9,6 +9,7 @@ import MatterportViewer from "./pages/MatterportViewer"; // Ensure the path and 
 import { confirmUser } from "./Utilities";
 import RoomPage from "./pages/RoomPage";
 import RoomDetail from "./components/RoomDetail";
+import ThreeDApp from "./pages/3dApp.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "*",
         element: <Navigate to ="/"/>, 
+      },
+      {
+        path: '3d-app',
+        element: <ThreeDApp />,
       },
     ],
   },

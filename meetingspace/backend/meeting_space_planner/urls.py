@@ -24,9 +24,10 @@ from events.views import EventDetail
 from rooms.views import RoomList
 from rooms.views import RoomDetail
 from accounts.views import Info
+from api.views import WeatherView
 
 
-urlpatterns = [ #add api/
+urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/signup/', SignUp.as_view(), name='signup'),
     path('api/login/', Login.as_view(), name='login'),
@@ -36,7 +37,8 @@ urlpatterns = [ #add api/
     path('api/events/<int:pk>/', EventDetail.as_view(), name='event-detail'),
     path('api/rooms/', RoomList.as_view(), name='room-list-create'),
     path('api/rooms/<int:pk>/', RoomDetail.as_view(), name='room-detail'),
-    path('api/user/', Info.as_view(), name='user')
+    path('api/user/', Info.as_view(), name='user'),
+    path('api/api/', WeatherView.as_view(), name='api')
 ]
 
 

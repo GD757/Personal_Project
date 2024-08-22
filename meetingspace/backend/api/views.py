@@ -2,6 +2,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+import requests
+from django.http import JsonResponse
+import os
 
 class ModelDetailsView(APIView):
     def get(self, request, model_id):
@@ -14,8 +17,6 @@ class ModelDetailsView(APIView):
         }
         return Response(data, status=status.HTTP_200_OK)
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
 
 class ListModelsView(APIView):
     def get(self, request):
@@ -25,5 +26,22 @@ class ListModelsView(APIView):
             {"id": "model_2", "name": "Conference Room", "description": "A professional meeting space."},
         ]
         return Response(models)
+
+
+
+class WeatherView(APIView):
+
+    def get(self, request):
+        api_key = os.getenv('WEATHER_API_KEY')
+        location = request.GET.get('location', 'Virginia')  # Default location if not provided
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&units=imperial&appid={api_key}'
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Failed to fetch weather data'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 

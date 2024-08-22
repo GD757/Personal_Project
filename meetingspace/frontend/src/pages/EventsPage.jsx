@@ -8,7 +8,7 @@ function EventsPage() {
     name: '',
     date: '',
     description: '',
-    room: null, // Initialize room to null
+    room: null,
   });
 
   useEffect(() => {
@@ -30,28 +30,25 @@ function EventsPage() {
   const handleRoomSelect = (room) => {
     setNewEvent({
       ...newEvent,
-      room: room.id, // Set the selected room's ID
+      room: room.id,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (newEvent.id) {
-      // Update existing event
       const updatedEvent = await updateEvent(newEvent.id, newEvent);
       if (updatedEvent) {
-        setEvents(events.map(event => event.id === newEvent.id ? updatedEvent : event));
+        setEvents(events.map((event) => (event.id === newEvent.id ? updatedEvent : event)));
       }
     } else {
-      // Create new event
       const createdEvent = await createEvent(newEvent);
       if (createdEvent) {
-        setEvents([...events, createdEvent]); // Add the newly created event to the state
+        setEvents([...events, createdEvent]);
       }
     }
-    
-    // Reset the form after submission
+
     setNewEvent({ name: '', date: '', description: '', room: null });
   };
 
@@ -61,65 +58,87 @@ function EventsPage() {
   };
 
   const handleEdit = (eventId) => {
-    const eventToEdit = events.find(event => event.id === eventId);
+    const eventToEdit = events.find((event) => event.id === eventId);
     setNewEvent(eventToEdit);
   };
 
   return (
-    <div className="events-page">
-      <h2>Upcoming Events</h2>
+    <div className="container mx-auto p-6">
+      <h2 className="text-2xl font-semibold text-center mb-8">Upcoming Events</h2>
 
-      <form onSubmit={handleSubmit}>
-        <h3>{newEvent.id ? 'Edit Event' : 'Create New Event'}</h3>
-        <div>
-          <label>Event Name:</label>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h3 className="text-2xl font-medium mb-6">{newEvent.id ? 'Edit Event' : 'Create New Event'}</h3>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Event Name:</label>
           <input
             type="text"
             name="name"
             value={newEvent.name}
             onChange={handleChange}
             required
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
-          <label>Date:</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Date:</label>
           <input
             type="date"
             name="date"
             value={newEvent.date}
             onChange={handleChange}
             required
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
-          <label>Description:</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Description:</label>
           <textarea
             name="description"
             value={newEvent.description}
             onChange={handleChange}
             required
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
-          <label>Selected Room:</label>
-          <span>{newEvent.room ? `Room ID: ${newEvent.room}` : 'No room selected'}</span>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Selected Room:</label>
+          <span className="block text-gray-900">
+            {newEvent.room ? `Room ID: ${newEvent.room}` : 'No room selected'}
+          </span>
         </div>
-        <button type="submit">{newEvent.id ? 'Update Event' : 'Create Event'}</button>
+        <button
+          type="submit"
+          className="w-full bg-black text-white p-3 rounded-lg hover:bg-gray-800 transition duration-200"
+        >
+          {newEvent.id ? 'Update Event' : 'Create Event'}
+        </button>
       </form>
 
-      <h3>Select a Room</h3>
+      <h3 className="text-2xl font-medium text-center mb-6">Select a Room</h3>
       <RoomPage onSelectRoom={handleRoomSelect} />
 
-      <h3>Event List</h3>
-      <ul className="events-list">
+      <h3 className="text-2xl font-medium text-center mb-6">Event List</h3>
+      <ul className="space-y-4">
         {events.map((event) => (
-          <li key={event.id} className="event-item">
-            <h3>{event.name}</h3>
-            <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
-            <p>{event.description}</p>
-            <p><strong>Room ID:</strong> {event.room}</p>
-            <button onClick={() => handleEdit(event.id)}>Edit</button>
-            <button onClick={() => handleDelete(event.id)}>Delete</button>
+          <li key={event.id} className="bg-white p-4 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">{event.name}</h3>
+            <p className="text-gray-700 mb-1"><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
+            <p className="text-gray-700 mb-1">{event.description}</p>
+            <p className="text-gray-700 mb-2"><strong>Room ID:</strong> {event.room}</p>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => handleEdit(event.id)}
+                className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-200"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(event.id)}
+                className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-200"
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
